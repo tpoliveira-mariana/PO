@@ -25,7 +25,7 @@ class Discipline implements Serializable {
 	}	
 
 
-	//========== GETTERS ===========//
+//========== GETTERS ===========//
 
 	String getName() {
 		return _name;
@@ -38,9 +38,9 @@ class Discipline implements Serializable {
 	Project getProject(String projName) {
 		return _projects.get(projName);
 	}
-	
+//	
 
-	//========== SETTERS ===========//
+//========== SETTERS ===========//
 
 	void setMaxStudents(int max) {
 		_maxStudents = max;
@@ -73,8 +73,9 @@ class Discipline implements Serializable {
 		if (observerExists(person))
 			_observers.remove(person.getId());
 	}
+//
 
-	//========== BOOLEANS ===========//
+//========== BOOLEANS ===========//
 
 	boolean canAddStudent() {
 		return _students.size() < _maxStudents;
@@ -101,9 +102,9 @@ class Discipline implements Serializable {
 
 		return proj.isOpen();
 	}
+//
 
-
-	//========== SHOW ===========//
+//========== SHOW ===========//
 
 	List<String> showStudents(School school) {
 		List<String> studentsInfo = new ArrayList<String>();
@@ -119,7 +120,31 @@ class Discipline implements Serializable {
 
 		return proj.showSubmissions();
 	}
+//
 
-//	void notifyObservers() {}
 
+//========== NOTIFICATION ===========//
+	void notifyObservers(String notification) {
+		for (Professor prof : _professors.values()) {
+			prof.receiveMail(notification);
+		}
+
+		for (Student student : _students.values()) {
+			student.receiveMail(notification);
+		}
+	}
+
+	void sendOpenNotification(String projName) {
+		String notification = "Pode preencher inquérito do projeto " + projName + 
+								" da disciplina " + getName();
+
+		notifyObservers(notification);
+	}
+
+	void sendFinishNotification(String projName) {
+		String notification = "Resultados do inquérito do projeto " + projName + 
+								" da disciplina " + getName();
+
+		notifyObservers(notification);
+	}
 }

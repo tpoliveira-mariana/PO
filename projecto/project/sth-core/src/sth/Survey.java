@@ -29,8 +29,8 @@ class Survey implements Serializable {
 		abstract void cancel(String disc, Project proj) throws NonEmptySurveySelectionException, 
 															SurveyFinishedSelectionException;
 
-		void open(String disc, String proj) throws OpeningSurveySelectionException {
-			throw new OpeningSurveySelectionException(disc, proj);
+		void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
+			throw new OpeningSurveySelectionException(disc.getName(), proj);
 		}
 
 		void close(String disc, String proj) throws ClosingSurveySelectionException {
@@ -43,7 +43,7 @@ class Survey implements Serializable {
 
 		SurveyAnswer answer(String disc, String proj, int hours, String msg) 
 														throws NoSurveySelectionException {
-															
+
 			throw new NoSurveySelectionException(disc, proj);
 		}
 	}
@@ -74,16 +74,18 @@ class Survey implements Serializable {
 		_state.cancel(disc, proj);
 	}
 
-	void open(String disc, String proj) throws OpeningSurveySelectionException {
+	void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
 		_state.open(disc, proj);
+		disc.sendOpenNotification(proj);
 	}
 
 	void close(String disc,String proj) throws ClosingSurveySelectionException {
 		_state.close(disc, proj);
 	}
 
-	void finish(String disc, String proj) throws FinishingSurveySelectionException {
-		_state.finish(disc, proj);
+	void finish(Discipline disc, String proj) throws FinishingSurveySelectionException {
+		_state.finish(disc.getName(), proj);
+		disc.sendFinishNotification(proj);
 	}
 
 	void answer(String disc, String proj, int hours, String msg) 

@@ -69,7 +69,7 @@ class Professor extends Person implements Serializable {
      	}
 
 		Project proj = disc.getProject(projName);
-		proj.close(discName);
+		proj.close(disc);
 	}
 
 	List<String> seeDisciplineStudents(School school, String discName) {

@@ -12,6 +12,7 @@ import sth.exceptions.OpeningSurveySelectionException;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.ClosingSurveySelectionException;
+import sth.exceptions.FinishingSurveySelectionException;
 
 class Project implements Serializable {
 
@@ -51,10 +52,10 @@ class Project implements Serializable {
 
 	//========== SETTERS ===========//
 
-	void close(String discName) throws OpeningSurveySelectionException {
+	void close(Discipline disc) throws OpeningSurveySelectionException {
 		_isOpen = false;
 		if (surveyAlreadyExists()) {
-			_survey.open(discName, getName());
+			_survey.open(disc, getName());
 		}
 	}
 
@@ -134,13 +135,13 @@ class Project implements Serializable {
 		_survey = new Survey();	
 	}
 
-	void openSurvey(String discName) throws NoSurveySelectionException,
+	void openSurvey(Discipline disc) throws NoSurveySelectionException,
 											OpeningSurveySelectionException {
 		if (!surveyAlreadyExists()) {
-			throw new NoSurveySelectionException(discName, getName());
+			throw new NoSurveySelectionException(disc.getName(), getName());
 		}
 
-		_survey.open(discName, getName());
+		_survey.open(disc, getName());
 	}
 
 	void cancelSurvey(String discName) throws NoSurveySelectionException,
@@ -162,5 +163,14 @@ class Project implements Serializable {
 		}
 
 		_survey.close(discName, getName());
+	}
+
+	void finishSurvey(Discipline disc) throws NoSurveySelectionException,
+											  FinishingSurveySelectionException {
+
+		if (!surveyAlreadyExists()) {
+			throw new NoSurveySelectionException(disc.getName(), getName());
+		}
+		_survey.finish(disc, getName());
 	}
 }

@@ -152,7 +152,7 @@ public class SchoolManager {
    * @throws ClassNotFoundException
    * @throws NoSuchPersonIdException
    */
-  public void openDataFile() throws IOException, FileNotFoundException, 
+  public List<String> openDataFile() throws IOException, FileNotFoundException, 
                                   ClassNotFoundException, NoSuchPersonIdException {
       ObjectInputStream in = 
           new ObjectInputStream(new BufferedInputStream (new FileInputStream(_infoFileName)));
@@ -165,9 +165,10 @@ public class SchoolManager {
 
       _school = newSchool;
       login(_user.getId());
-      showInbox();
       in.close();
       modify();
+
+      return showInbox();
   }
 
   /**
@@ -380,6 +381,18 @@ public class SchoolManager {
 
     if (hasRepresentative()) {
       _school.letCloseSurvey(_user, discName, projName);
+      modify();
+    }
+  }
+
+  public void finishSurvey(String discName, String projName)
+                                                  throws NoSuchDisciplineSelectionException, 
+                                                  NoSuchProjectSelectionException,
+                                                  NoSurveySelectionException,
+                                                  FinishingSurveySelectionException {
+
+    if (hasRepresentative()) {
+      _school.letFinishSurvey(_user, discName, projName);
       modify();
     }
   }

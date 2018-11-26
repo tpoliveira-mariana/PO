@@ -25,7 +25,7 @@ class ClosedState extends Survey.SurveyState {
 
 	// Um inquérito fechado pode ser reaberto
 	@Override
-	void open(String disc, String proj) throws OpeningSurveySelectionException {
+	void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
 		getSurvey().setState(new OpenState(getSurvey()));
 	}
 

@@ -23,7 +23,7 @@ class CreatedState extends Survey.SurveyState {
 
 	@Override
 	// Um inquérito criado é aberto quando o projeto que lhe está associado é fechado
-	void open(String disc, String proj) throws OpeningSurveySelectionException {
+	void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
 		getSurvey().setState(new OpenState(getSurvey()));
 	}
 }

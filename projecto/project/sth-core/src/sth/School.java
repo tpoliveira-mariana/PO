@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * School implementation.
  */
-public class School implements Serializable {
+class School implements Serializable {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 201810051538L;
@@ -783,7 +783,7 @@ public class School implements Serializable {
     rep.cancelSurvey(discName, projName);
   }
 
-  public void letCloseSurvey(Person p, String discName, String projName) 
+  void letCloseSurvey(Person p, String discName, String projName) 
                                                   throws NoSuchDisciplineSelectionException, 
                                                   NoSuchProjectSelectionException,
                                                   NoSurveySelectionException,
@@ -795,6 +795,20 @@ public class School implements Serializable {
     }
 
     rep.closeSurvey(discName, projName);
+  }
+
+  void letFinishSurvey(Person p, String discName, String projName)
+                                                  throws NoSuchDisciplineSelectionException, 
+                                                  NoSuchProjectSelectionException,
+                                                  NoSurveySelectionException,
+                                                  FinishingSurveySelectionException {
+
+    Student rep = getStudentById(p.getId());
+    if (!rep.attendsDiscipline(discName)) {
+      throw new NoSuchDisciplineSelectionException(discName);
+    }
+
+    rep.finishSurvey(discName, projName);
   }
 // 
 }

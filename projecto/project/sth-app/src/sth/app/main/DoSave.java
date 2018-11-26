@@ -27,7 +27,7 @@ public class DoSave extends Command<SchoolManager> {
   public final void execute() {
     try {
       if (!_receiver.hasFile()) {
-	_form.parse();
+	      _form.parse();
         _receiver.setFile(_filename.value());
       } 
       _receiver.saveDataToFile();
@@ -38,5 +38,4 @@ public class DoSave extends Command<SchoolManager> {
       e.printStackTrace();
     }
   }
-
 }

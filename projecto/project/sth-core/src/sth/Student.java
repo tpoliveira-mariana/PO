@@ -9,6 +9,7 @@ import sth.exceptions.OpeningSurveySelectionException;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.ClosingSurveySelectionException;
+import sth.exceptions.FinishingSurveySelectionException;
 
 
 class Student extends Person implements Serializable {
@@ -108,7 +109,7 @@ class Student extends Person implements Serializable {
     											OpeningSurveySelectionException {
 
     	Project proj = validateProject(discName, projName);
-    	proj.openSurvey(discName);
+    	proj.openSurvey(getDisciplineByName(discName));
     }
 
     void cancelSurvey(String discName, String projName)
@@ -128,6 +129,15 @@ class Student extends Person implements Serializable {
 
     	Project proj = validateProject(discName, projName);
     	proj.closeSurvey(discName);
+    }
+
+    void finishSurvey(String discName, String projName)
+    											throws NoSuchProjectSelectionException,
+    											NoSurveySelectionException,
+    											FinishingSurveySelectionException {
+
+  		Project proj = validateProject(discName, projName);
+  		proj.finishSurvey(getDisciplineByName(discName));
     }
 
 //	void promoteToRepresentative() {}
