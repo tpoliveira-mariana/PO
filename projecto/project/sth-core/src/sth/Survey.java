@@ -1,8 +1,7 @@
 package sth;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
@@ -16,7 +15,7 @@ class Survey implements Serializable {
 	private static final long serialVersionUID = 201811241523L;
 	private SurveyState _state = new CreatedState(this);
 	private int _numberAnswers = 0;
-	private Map<Integer, SurveyAnswer> _answers = new HashMap<Integer,SurveyAnswer>();
+	private HashSet<SurveyAnswer> _answers = new HashSet<SurveyAnswer>();
 
 	abstract class SurveyState implements Serializable {
 		/** Serial number for serialization. */
@@ -56,7 +55,7 @@ class Survey implements Serializable {
 	}
 
 	void addAnswer(SurveyAnswer answer) {
-		_answers.put(_numberAnswers++, answer);
+		_answers.add(answer);
 	}
 
 
