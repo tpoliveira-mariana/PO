@@ -5,8 +5,10 @@ import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
+import sth.Observable;
 
-class Discipline implements Serializable {
+class Discipline extends sth.Observable implements Serializable {
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID =201811081105L;
@@ -16,14 +18,11 @@ class Discipline implements Serializable {
 	private HashMap<Integer, Professor> _professors = new HashMap<Integer, Professor>();
 	private TreeMap<Integer, Student> _students = new TreeMap<Integer, Student>();
 	private HashMap<String, Project> _projects = new HashMap<String, Project>();
-	private HashMap<Integer, Person> _observers = new HashMap<Integer, Person>();
-
 
 	Discipline(String name) {
 		_name = name;
 		_maxStudents = 10 + ((int) Math.random() * 200);
 	}	
-
 
 //========== GETTERS ===========//
 
@@ -64,15 +63,6 @@ class Discipline implements Serializable {
 		_projects.put(proj.getName(), proj);
 	}
 
-	void addObserver(Person person) {
-		if (!observerExists(person))
-			_observers.put(person.getId(), person);
-	}
-
-	void removeObserver(Person person) {
-		if (observerExists(person))
-			_observers.remove(person.getId());
-	}
 //
 
 //========== BOOLEANS ===========//
@@ -87,10 +77,6 @@ class Discipline implements Serializable {
 
 	boolean studentExists(int id) {
 		return _students.containsKey(id);
-	}
-
-	private boolean observerExists(Person p) {
-		return _observers.containsKey(p.getId());
 	}
 
 	boolean projectExists(String projName) {
@@ -124,15 +110,6 @@ class Discipline implements Serializable {
 
 
 //========== NOTIFICATION ===========//
-	void notifyObservers(String notification) {
-		for (Professor prof : _professors.values()) {
-			prof.receiveMail(notification);
-		}
-
-		for (Student student : _students.values()) {
-			student.receiveMail(notification);
-		}
-	}
 
 	void sendOpenNotification(String projName) {
 		String notification = "Pode preencher inquérito do projeto " + projName + 
@@ -147,4 +124,5 @@ class Discipline implements Serializable {
 
 		notifyObservers(notification);
 	}
+//
 }

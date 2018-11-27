@@ -15,11 +15,11 @@ class MailBox implements Serializable {
 		return _inBox;
 	}
 
-	void addNotification(String note) {
+	void addMail(String note) {
 		_inBox.add(note);
 	}
 
-	List<String> seeNotifications() {
+	List<String> seeMail() {
 		List<String> all = new ArrayList<String>(_inBox);
 		_inBox.clear();
 

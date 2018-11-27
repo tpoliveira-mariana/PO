@@ -3,9 +3,10 @@ package sth;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+import sth.Observer;
 import sth.exceptions.InvalidPhoneNumberException;
 
-abstract class Person implements Comparable<Person>, Serializable {
+abstract class Person implements Comparable<Person>, Serializable, sth.Observer {
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 201811081101L;	
@@ -36,8 +37,9 @@ abstract class Person implements Comparable<Person>, Serializable {
 	}
 	
 
-	List<String> seeAllNotifications() {
-		return _mail.seeNotifications();
+	@Override
+	public List<String> seeAllNotifications() {
+		return _mail.seeMail();
 	}
 
 
@@ -50,8 +52,9 @@ abstract class Person implements Comparable<Person>, Serializable {
 			throw new InvalidPhoneNumberException(number);
 	}
 
-	void receiveMail(String mail) {
-		_mail.addNotification(mail);
+	@Override
+	public void receiveNotification(String notification) {
+		_mail.addMail(notification);
 	}
 
 
