@@ -40,4 +40,9 @@ class OpenState extends Survey.SurveyState {
 		Survey survey = getSurvey();
 		return new SurveyAnswer(hours, msg);
 	}
+
+	@Override
+	String showResults(School school, Person p, String discName, Project proj) {
+		return discName + " - " + proj.getName() + " (aberto)";
+	}
 }

@@ -2,6 +2,7 @@ package sth;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
@@ -15,7 +16,7 @@ class Survey implements Serializable {
 	private static final long serialVersionUID = 201811241523L;
 	private SurveyState _state = new CreatedState(this);
 	private int _numberAnswers = 0;
-	private HashSet<SurveyAnswer> _answers = new HashSet<SurveyAnswer>();
+	private Set<SurveyAnswer> _answers = new HashSet<SurveyAnswer>();
 
 	abstract class SurveyState implements Serializable {
 		/** Serial number for serialization. */
@@ -45,6 +46,8 @@ class Survey implements Serializable {
 
 			throw new NoSurveySelectionException(disc, proj);
 		}
+
+		abstract String showResults(School school, Person p, String discName, Project proj);
 	}
 
 
@@ -56,8 +59,18 @@ class Survey implements Serializable {
 
 	void addAnswer(SurveyAnswer answer) {
 		_answers.add(answer);
+		_numberAnswers++;
 	}
 
+	//========== GETTERS ===========//
+
+	Set<SurveyAnswer> getAnswers() {
+		return _answers;
+	}
+
+	int getNumAnswers() {
+		return _numberAnswers;
+	}
 
 	//========== BOOLEANS ===========//
 
@@ -94,4 +107,7 @@ class Survey implements Serializable {
 		addAnswer(answer);
 	}
 
+	String showResults(School school, Person p, String discName, Project proj) {
+		return _state.showResults(school, p, discName, proj);
+	}
 }

@@ -26,4 +26,9 @@ class CreatedState extends Survey.SurveyState {
 	void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
 		getSurvey().setState(new OpenState(getSurvey()));
 	}
+
+	@Override
+	String showResults(School school, Person p, String discName, Project proj) {
+		return discName + " - " + proj.getName() + " (por abrir)";
+	}
 }

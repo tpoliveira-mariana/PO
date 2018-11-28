@@ -3,10 +3,13 @@ package sth;
 import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import sth.Observable;
+import sth.exceptions.NoSuchProjectSelectionException;
+import sth.exceptions.NoSurveySelectionException;
 
 class Discipline extends sth.Observable implements Serializable {
 
@@ -15,9 +18,9 @@ class Discipline extends sth.Observable implements Serializable {
 	private int _maxStudents;	
 	private String _name = "";
 	private int _currentStudents = 0;
-	private HashMap<Integer, Professor> _professors = new HashMap<Integer, Professor>();
-	private TreeMap<Integer, Student> _students = new TreeMap<Integer, Student>();
-	private HashMap<String, Project> _projects = new HashMap<String, Project>();
+	private Map<Integer, Professor> _professors = new HashMap<Integer, Professor>();
+	private Map<Integer, Student> _students = new TreeMap<Integer, Student>();
+	private Map<String, Project> _projects = new TreeMap<String, Project>();
 
 	Discipline(String name) {
 		_name = name;
@@ -36,6 +39,14 @@ class Discipline extends sth.Observable implements Serializable {
 
 	Project getProject(String projName) {
 		return _projects.get(projName);
+	}
+
+	Project validateProject(String projName) throws NoSuchProjectSelectionException {
+		if (!projectExists(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		return getProject(projName);
 	}
 //	
 
@@ -105,6 +116,18 @@ class Discipline extends sth.Observable implements Serializable {
 		Project proj = getProject(projName);
 
 		return proj.showSubmissions();
+	}
+
+	List<String> showSurveys(School school, Student rep) throws NoSurveySelectionException {
+		List<String> allSurveys = new ArrayList<String>();
+
+		for (Project proj : _projects.values()) {
+			if (proj.surveyAlreadyExists()) {
+				allSurveys.add(proj.showSurveyResults(school, rep, getName()));
+			}
+		}
+
+		return allSurveys;
 	}
 //
 

@@ -3,6 +3,7 @@ package sth;
 import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.Map;
 import sth.exceptions.BadEntryException;
 
 
@@ -13,10 +14,10 @@ class Course implements Serializable {
 	private static final int MAX_REPRESENTATIVES = 7;
 	private String _name;
 	private int _currentRepresentatives = 0;
-	private TreeMap<String, Discipline> _disciplines = new TreeMap<String, Discipline>(new AccentedComparator()); //TODO comparator que considere acentos
-	private HashMap<Integer, Student> _students = new HashMap<Integer, Student>();
-	private HashMap<Integer, Student> _representatives = new HashMap<Integer, Student>();
-	private HashMap<Integer, Professor> _professors = new HashMap<Integer, Professor>();
+	private Map<String, Discipline> _disciplines = new TreeMap<String, Discipline>(new AccentedComparator()); //TODO comparator que considere acentos
+	private Map<Integer, Student> _students = new HashMap<Integer, Student>();
+	private Map<Integer, Student> _representatives = new HashMap<Integer, Student>();
+	private Map<Integer, Professor> _professors = new HashMap<Integer, Professor>();
 
 	Course(String name) {
 		_name = name;

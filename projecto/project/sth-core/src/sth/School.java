@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.TreeMap;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,13 +27,13 @@ class School implements Serializable {
   /** The ID to which the last registered person was assigned to. */
   private int _currentID = 100000;   
   /** Courses in the school. */
-  private TreeMap<String,Course> _courses = new TreeMap<String,Course>(new AccentedComparator());
+  private Map<String,Course> _courses = new TreeMap<String,Course>(new AccentedComparator());
   /** Students registered in the school. */
-  private HashMap<Integer, Student> _students = new HashMap<Integer, Student>();
+  private Map<Integer, Student> _students = new HashMap<Integer, Student>();
   /** Professors registered in the school. */
-  private HashMap<Integer, Professor> _professors = new HashMap<Integer, Professor>();
+  private Map<Integer, Professor> _professors = new HashMap<Integer, Professor>();
   /** Administratives registered in the school. */
-  private HashMap<Integer, Administrative> _administratives = new HashMap<Integer, Administrative>();
+  private Map<Integer, Administrative> _administratives = new HashMap<Integer, Administrative>();
 
 
 //========== IMPORTFILE ===========//
@@ -560,7 +561,7 @@ class School implements Serializable {
    * @return A list of strings of people that contain nameToFind in their name.
    */
   List<String> searchPersonByName(String nameToFind) {
-    TreeMap<String, Person> peopleAlike = new TreeMap<String, Person>(new AccentedComparator()); 
+    Map<String, Person> peopleAlike = new TreeMap<String, Person>(new AccentedComparator()); 
     List<Person> personnel = getPersonnel();
     List<String> info = new ArrayList<String>();
 
@@ -662,12 +663,25 @@ class School implements Serializable {
                                                   throws NoSuchDisciplineSelectionException, 
                                                   NoSuchProjectSelectionException {
     Professor prof = getProfessorById(p.getId());
-
     if (!prof.teachesDiscipline(discName)) {
       throw new NoSuchDisciplineSelectionException(discName);
     }
 
     return prof.seeProjectSubmissions(discName, projName); 
+  }
+
+  String letSeeSurveyResultsProf(Person p, String discName, String projName)
+                                                  throws NoSuchDisciplineSelectionException,
+                                                  NoSuchProjectSelectionException,
+                                                  NoSurveySelectionException {
+    
+    Professor prof = getProfessorById(p.getId());
+    if (!prof.teachesDiscipline(discName)) {
+      throw new NoSuchDisciplineSelectionException(discName);
+    }  
+
+
+    return prof.seeSurveyResults(this, discName, projName);
   }
 //
 
@@ -710,7 +724,19 @@ class School implements Serializable {
     }
 
     student.answerSurvey(discName, projName, hours, message);
+  }
 
+  String letSeeSurveyResultsStudent(Person p, String discName, String projName)
+                                                  throws NoSuchDisciplineSelectionException,
+                                                  NoSuchProjectSelectionException,
+                                                  NoSurveySelectionException {
+    
+    Student student = getStudentById(p.getId());
+    if (!student.attendsDiscipline(discName)) {
+      throw new NoSuchDisciplineSelectionException(discName);
+    }  
+
+    return student.showSurveyResults(this, discName, projName);
   }
 
   /**
@@ -809,6 +835,18 @@ class School implements Serializable {
     }
 
     rep.finishSurvey(discName, projName);
+  }
+
+  List<String> letSeeDisciplineSurveys(Person p, String discName)
+                                                   throws NoSuchDisciplineSelectionException, 
+                                                   NoSurveySelectionException {
+
+    Student rep = getStudentById(p.getId());
+    if (!rep.attendsDiscipline(discName)) {
+      throw new NoSuchDisciplineSelectionException(discName);
+    }
+
+    return rep.seeDisciplineSurveys(this, discName);
   }
 // 
 }

@@ -13,9 +13,7 @@ import java.io.FileInputStream;
 import java.util.List;
 import java.util.ArrayList;
 import sth.exceptions.*;
-import java.util.TreeMap;
-import java.util.Map;
-import java.util.Map.Entry;
+
 
 /**
  * The façade class.
@@ -286,6 +284,17 @@ public class SchoolManager {
     }
     return null;
   }
+
+  public String showSurveyResultsProf(String discName, String projName)
+                                              throws NoSuchDisciplineSelectionException, 
+                                              NoSuchProjectSelectionException,
+                                              NoSurveySelectionException {  
+
+    if (hasProfessor()) {
+      return _school.letSeeSurveyResultsProf(_user, discName, projName);
+    }
+    return null;
+  }
 //
 
 //======= ALUNO =======//
@@ -334,6 +343,17 @@ public class SchoolManager {
       _school.letAnswerSurvey(_user, discName, projName, hours, message);
       modify();
     }
+  }
+
+  public String showSurveyResultsStudent(String discName, String projName)
+                                              throws NoSuchDisciplineSelectionException, 
+                                              NoSuchProjectSelectionException,
+                                              NoSurveySelectionException {  
+
+    if (hasStudent()) {
+      return _school.letSeeSurveyResultsStudent(_user, discName, projName);
+    }
+    return null;
   }
 //
 
@@ -395,6 +415,16 @@ public class SchoolManager {
       _school.letFinishSurvey(_user, discName, projName);
       modify();
     }
+  }
+
+  public List<String> showDisciplineSurveys(String discName)
+                                              throws NoSuchDisciplineSelectionException, 
+                                              NoSurveySelectionException {  
+
+    if (hasRepresentative()) {
+      return _school.letSeeDisciplineSurveys(_user, discName);
+    }
+    return null;
   }
 // 
 }

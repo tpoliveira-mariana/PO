@@ -49,6 +49,10 @@ class Project implements Serializable {
 		return _submissions.get(id);
 	}
 
+    int numSubmissions() {
+        return _submissions.size();
+    }
+
 
 	//========== SETTERS ===========//
 
@@ -74,7 +78,7 @@ class Project implements Serializable {
 	}
 
 
-	//========== BOOLEANS ===========//
+//========== BOOLEANS ===========//
 
 	boolean isOpen() {
 		return _isOpen;
@@ -92,9 +96,9 @@ class Project implements Serializable {
 		ProjectSubmission sub = getSubmission(id);
 		return sub.answeredSurvey();	
 	}
+//
 
-
-	//========== SHOW ===========//
+//========== SHOW ===========//
 
 	List<String> showSubmissions() {
 		List<String> result = new ArrayList<String>();
@@ -107,7 +111,17 @@ class Project implements Serializable {
 		return result;
 	}
 
-	//========== SURVEY ===========//
+	String showSurveyResults(School school, Person p, String discName)
+													throws NoSurveySelectionException {
+		if (!surveyAlreadyExists()) {
+			throw new NoSurveySelectionException(discName, getName());
+		}
+
+		return _survey.showResults(school, p, discName, this);
+	}
+//
+	
+//========== SURVEY ===========//
 
 	void addSurveyAnswer(int id, String discName, int hours, String message) 
 														throws NoSuchProjectSelectionException,
@@ -173,4 +187,5 @@ class Project implements Serializable {
 		}
 		_survey.finish(disc, getName());
 	}
+//
 }

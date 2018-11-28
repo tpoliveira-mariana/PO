@@ -2,9 +2,11 @@ package sth;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import sth.exceptions.DuplicateProjectSelectionException;
 import sth.exceptions.NoSuchProjectSelectionException;
+import sth.exceptions.NoSurveySelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
 
 
@@ -12,44 +14,44 @@ class Professor extends Person implements Serializable {
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 201811081103L;
-	private HashMap<String, Discipline> _disciplines = new HashMap<String, Discipline>();
+	private Map<String, Discipline> _disciplines = new HashMap<String, Discipline>();
 
 	Professor(String name, String number, int id) {
 		super(name, number, id);
 	}
 
-	//========== GETTERS ===========//
+//========== GETTERS ===========//
 
 	private Discipline getDisciplineByName(String discName) {
 		return _disciplines.get(discName);
 	}
+//
 
-
-	//========== SETTERS ===========//
+//========== SETTERS ===========//
 
 	void addDiscipline(Discipline disc) {
 		String key = disc.getName();
 		if (!(_disciplines.containsKey(key)))
 			_disciplines.put(key, disc);
 	}
+//
 
-
-	//========== BOOLEANS ===========//
+//========== BOOLEANS ===========//
 
 	boolean teachesDiscipline(String discName) {
 		return _disciplines.containsKey(discName);
 	}
+//
 
-
-	//========== SHOW ===========//
+//========== SHOW ===========//
 
 	@Override
 	public String toString() {
 		return "DOCENTE|" + super.toString();
 	}
-	
+//	
 
-	//========== PROJECT ===========//
+//========== PROJECT ===========//
 
 	void createProject(String discName, String projName) throws DuplicateProjectSelectionException {
 		Discipline disc = getDisciplineByName(discName);
@@ -87,4 +89,18 @@ class Professor extends Person implements Serializable {
 
 		return disc.showProjectSubmissions(projName);
 	}
+//
+
+//========== SURVEY ===========//
+
+	String seeSurveyResults(School school, String discName, String projName)
+														throws NoSuchProjectSelectionException,
+														NoSurveySelectionException {
+
+		Discipline disc = getDisciplineByName(discName);
+		Project proj = disc.validateProject(projName);
+
+		return proj.showSurveyResults(school, this, discName);
+	}
+//
 }

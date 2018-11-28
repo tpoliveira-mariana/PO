@@ -40,4 +40,9 @@ class ClosedState extends Survey.SurveyState {
 	void finish(String disc, String proj) throws FinishingSurveySelectionException {
 		getSurvey().setState(new FinishedState(getSurvey()));
 	}
+
+	@Override
+	String showResults(School school, Person p, String discName, Project proj) {
+		return discName + " - " + proj.getName() + " (fechado)";
+	}
 }
