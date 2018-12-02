@@ -31,9 +31,8 @@ public class DoOpen extends Command<SchoolManager> {
   public final void execute() throws DialogException {
     
     try {   
-      _form.parse();
-      _receiver.setFile(_filename.value());  
-      List<String> notifications = _receiver.openDataFile();
+      _form.parse(); 
+      List<String> notifications = _receiver.openDataFile(_filename.value());
 
       for (String note : notifications) 
         _display.addLine(note);

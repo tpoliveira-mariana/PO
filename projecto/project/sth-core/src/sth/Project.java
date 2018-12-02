@@ -100,8 +100,10 @@ class Project implements Serializable {
 
 //========== SHOW ===========//
 
-	List<String> showSubmissions() {
+	List<String> showSubmissions(String discName) {
 		List<String> result = new ArrayList<String>();
+
+		result.add(discName + " - " + getName());
 
 		for (ProjectSubmission sub : _submissions.values()) {
 			String info = sub.toString();

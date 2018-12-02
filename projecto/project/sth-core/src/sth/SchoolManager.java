@@ -42,14 +42,14 @@ public class SchoolManager {
   /**
    * @param fileName
    */
-  public void setFile(String fileName) {
+  void updateFileName(String fileName) {
     _infoFileName = fileName;
   }
 //
 
 //========== BOOLEANS ===========//
 
-  public boolean hasFile() {
+  public boolean hasFile(String fileName) {
     return _infoFileName != null;
   }
 //
@@ -150,8 +150,11 @@ public class SchoolManager {
    * @throws ClassNotFoundException
    * @throws NoSuchPersonIdException
    */
-  public List<String> openDataFile() throws IOException, FileNotFoundException, 
+  public List<String> openDataFile(String fileName) throws IOException, FileNotFoundException, 
                                   ClassNotFoundException, NoSuchPersonIdException {
+
+      updateFileName(fileName);
+
       ObjectInputStream in = 
           new ObjectInputStream(new BufferedInputStream (new FileInputStream(_infoFileName)));
 
@@ -173,7 +176,11 @@ public class SchoolManager {
    * @throws IOException
    * @throws FileNotFoundException
    */
-  public void saveDataToFile() throws IOException, FileNotFoundException {
+  public void saveDataToFile(String fileName) throws IOException, FileNotFoundException {
+
+    if (fileName != null) {
+      updateFileName(fileName);
+    }
 
     if (!isUpToDate()) {
       ObjectOutputStream out = 
@@ -329,7 +336,7 @@ public class SchoolManager {
    * The user stops being one of the representatives of his course
    */
   public void stopBeingRepresentative() {
-    if (hasStudent()) {
+    if (hasRepresentative()) {
       _school.letStopBeingRepresentative(_user);
       modify();
     }
@@ -417,6 +424,16 @@ public class SchoolManager {
     }
   }
 
+  public void showSurveyResultsRep(String discName, String projName) 
+  											 	throws NoSuchDisciplineSelectionException, 
+                                              	NoSuchProjectSelectionException,
+                                              	NoSurveySelectionException {
+
+  	if (hasRepresentative()) {
+  		_school.letRepSeeSurveyResults(_user, discName, projName);
+  	}
+  }
+
   public List<String> showDisciplineSurveys(String discName)
                                               throws NoSuchDisciplineSelectionException, 
                                               NoSurveySelectionException {  
@@ -427,4 +444,15 @@ public class SchoolManager {
     return null;
   }
 // 
+
+
+//======= OBSERVERS =======//
+
+  void disableNotifications(String discName) {
+  	if (hasProfessor() || hasStudent()) {
+  		_user.disableNotifications(discName);
+  	}
+  }
+//
+
 }

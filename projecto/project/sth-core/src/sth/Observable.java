@@ -1,6 +1,7 @@
 package sth;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.io.Serializable;
 import sth.Observer;
 
@@ -9,7 +10,7 @@ abstract class Observable implements Serializable {
 
 	/** Serial number for serialization. */
   	private static final long serialVersionUID = 201811272014L;
-	private HashSet<Observer> _observers = new HashSet<Observer>();
+	private Set<Observer> _observers = new HashSet<Observer>();
 
 	void addObserver(Observer obs) {
 		_observers.add(obs);

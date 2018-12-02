@@ -744,7 +744,7 @@ class School implements Serializable {
    * @param p
    * The person that wants to become a representative.
    */
-  void letBecomeRepresentative(Person p) {  //TODO mandar excecao
+  void letBecomeRepresentative(Person p) {  
     Student student = getStudentById(p.getId());
     Course course = getStudentCourse(student);
 
@@ -766,18 +766,23 @@ class School implements Serializable {
 //
 
 //========== DELEGADO ==========// 
+  Discipline validateRepDiscipline(Person p, String discName) throws NoSuchDisciplineSelectionException {
+    Student rep = getStudentById(p.getId());
+    Course course = getStudentCourse(rep);
+    Discipline disc = course.getDiscipline(discName);
+    if (disc == null) {
+      throw new NoSuchDisciplineSelectionException(discName); 
+    }
+    return disc;
+  }
 
   void letCreateSurvey(Person p, String discName, String projName) 
                                                       throws NoSuchDisciplineSelectionException,
                                                       NoSuchProjectSelectionException,
                                                       DuplicateSurveySelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
-
-    rep.createSurvey(discName, projName);
+    Discipline disc = validateRepDiscipline(p, discName);
+    disc.createSurvey(projName);
   }
 
   void letOpenSurvey(Person p, String discName, String projName) 
@@ -786,12 +791,8 @@ class School implements Serializable {
                                                       NoSurveySelectionException, 
                                                       OpeningSurveySelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
-
-    rep.openSurvey(discName, projName);
+    Discipline disc = validateRepDiscipline(p, discName);
+    disc.openSurvey(projName);
   }
 
   void letCancelSurvey(Person p, String discName, String projName) 
@@ -801,12 +802,8 @@ class School implements Serializable {
                                                   NonEmptySurveySelectionException,
                                                   SurveyFinishedSelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
-
-    rep.cancelSurvey(discName, projName);
+    Discipline disc = validateRepDiscipline(p, discName);
+    disc.cancelSurvey(projName);
   }
 
   void letCloseSurvey(Person p, String discName, String projName) 
@@ -815,12 +812,8 @@ class School implements Serializable {
                                                   NoSurveySelectionException,
                                                   ClosingSurveySelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
-
-    rep.closeSurvey(discName, projName);
+    Discipline disc = validateRepDiscipline(p, discName);
+    disc.closeSurvey(projName);
   }
 
   void letFinishSurvey(Person p, String discName, String projName)
@@ -829,25 +822,28 @@ class School implements Serializable {
                                                   NoSurveySelectionException,
                                                   FinishingSurveySelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
+    Discipline disc = validateRepDiscipline(p, discName);
+    disc.finishSurvey(projName);
+  }
 
-    rep.finishSurvey(discName, projName);
+  String letRepSeeSurveyResults(Person p, String discName, String projName) 
+                                                  throws NoSuchDisciplineSelectionException, 
+                                                  NoSuchProjectSelectionException,
+                                                  NoSurveySelectionException {
+
+    validateRepDiscipline(p, discName);
+    Student rep = getStudentById(p.getId());
+    return rep.showSurveyResults(this, discName, projName);
   }
 
   List<String> letSeeDisciplineSurveys(Person p, String discName)
                                                    throws NoSuchDisciplineSelectionException, 
                                                    NoSurveySelectionException {
 
-    Student rep = getStudentById(p.getId());
-    if (!rep.attendsDiscipline(discName)) {
-      throw new NoSuchDisciplineSelectionException(discName);
-    }
-
-    return rep.seeDisciplineSurveys(this, discName);
+    Discipline disc = validateRepDiscipline(p, discName);
+    return disc.showSurveys(this, p);
   }
 // 
+
 }
 

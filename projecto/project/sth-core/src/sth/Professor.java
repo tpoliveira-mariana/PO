@@ -103,4 +103,15 @@ class Professor extends Person implements Serializable {
 		return proj.showSurveyResults(school, this, discName);
 	}
 //
+
+//========== NOTIFICATIONS ===========//
+
+	@Override
+	public void disableNotifications(String discName) {
+		Discipline disc = getDisciplineByName(discName);
+		if (disc != null) {
+			disc.removeObserver(this);
+		}
+	}
+//
 }

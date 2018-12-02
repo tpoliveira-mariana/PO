@@ -43,6 +43,8 @@ class FinishedState extends Survey.SurveyState {
 
 		int numAnswers = getSurvey().getNumAnswers();
 		int avgTime = (numAnswers == 0 ? 0 : totalHours/numAnswers);
+		minHours = (minHours == -1 ? 0 : minHours);
+		maxHours = (maxHours == -1 ? 0 : maxHours);
 
 		if (school.professorExists(p.getId())) {
 			results += "\n * Número de submissões: " + proj.numSubmissions() + "\n" + 

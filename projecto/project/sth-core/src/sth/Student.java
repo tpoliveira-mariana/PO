@@ -7,12 +7,6 @@ import java.util.List;
 import sth.exceptions.NoSuchDisciplineSelectionException;
 import sth.exceptions.NoSuchProjectSelectionException;
 import sth.exceptions.NoSurveySelectionException;
-import sth.exceptions.DuplicateSurveySelectionException;
-import sth.exceptions.OpeningSurveySelectionException;
-import sth.exceptions.NonEmptySurveySelectionException;
-import sth.exceptions.SurveyFinishedSelectionException;
-import sth.exceptions.ClosingSurveySelectionException;
-import sth.exceptions.FinishingSurveySelectionException;
 
 
 class Student extends Person implements Serializable {
@@ -99,75 +93,25 @@ class Student extends Person implements Serializable {
     proj.addSurveyAnswer(getId(), discName, hours, message);
   }
 
-  void createSurvey(String discName, String projName) 
-                          											throws NoSuchProjectSelectionException,
-    										                      	DuplicateSurveySelectionException {
-
-    Project proj = validateProject(discName, projName);
-    proj.addSurvey(discName);
-  }
-
-  void openSurvey(String discName, String projName) 
-                           											throws NoSuchProjectSelectionException,
-    											                      NoSurveySelectionException, 
-    											                      OpeningSurveySelectionException {
-
-    Project proj = validateProject(discName, projName);
-    proj.openSurvey(getDisciplineByName(discName));
-  }
-
-  void cancelSurvey(String discName, String projName)
-                          											throws NoSuchProjectSelectionException,
-    										                      	NoSurveySelectionException,
-    										                      	NonEmptySurveySelectionException,
-    											                      SurveyFinishedSelectionException {
-
-    Project proj = validateProject(discName, projName);
-    proj.cancelSurvey(discName);
-  }
-     
-  void closeSurvey(String discName, String projName)
-                          											throws NoSuchProjectSelectionException,
-    										                      	NoSurveySelectionException,
-    											                      ClosingSurveySelectionException {
-
-    Project proj = validateProject(discName, projName);
-    proj.closeSurvey(discName);
-  }
-
-  void finishSurvey(String discName, String projName)
-                      						  					throws NoSuchProjectSelectionException,
-    										                    	NoSurveySelectionException,
-    								                    			FinishingSurveySelectionException {
-
-  	Project proj = validateProject(discName, projName);
-  	proj.finishSurvey(getDisciplineByName(discName));
-  }
-
   String showSurveyResults(School school, String discName, String projName)
                                                     throws NoSuchDisciplineSelectionException,
                                                     NoSuchProjectSelectionException,
                                                     NoSurveySelectionException {
 
-    if (!attendsDiscipline(discName)) {
+    boolean isRep = school.representativeExists(getId()); 
+
+    if (!isRep && !attendsDiscipline(discName)) {
       throw new NoSuchDisciplineSelectionException(discName);
     }
 
     Discipline disc = getDisciplineByName(discName);
     Project proj = disc.getProject(projName);
 
-    if (proj == null || !proj.hasSubmitted(getId())) {
+    if (proj == null || (!isRep && !proj.hasSubmitted(getId()))) {
       throw new NoSuchProjectSelectionException(discName, projName);
     }
 
     return proj.showSurveyResults(school, this, discName);
-  }
-
-  List<String> seeDisciplineSurveys(School school, String discName)  
-                                                    throws NoSurveySelectionException {
-
-    Discipline disc = getDisciplineByName(discName);
-    return disc.showSurveys(school, this);
   }
 //	
 }

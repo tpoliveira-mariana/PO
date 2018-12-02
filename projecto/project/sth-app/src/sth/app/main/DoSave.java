@@ -12,25 +12,24 @@ import sth.SchoolManager;
  */
 public class DoSave extends Command<SchoolManager> {
 
-  Input<String> _filename;
+  Input<String> _fileName;
 
   /**
    * @param receiver
    */
   public DoSave(SchoolManager receiver) {
     super(Label.SAVE, receiver);
-    _filename = _form.addStringInput(Message.newSaveAs());
+    _fileName = _form.addStringInput(Message.newSaveAs());
   }
 
   /** @see pt.tecnico.po.ui.Command#execute() */
   @Override
   public final void execute() {
     try {
-      if (!_receiver.hasFile()) {
-	      _form.parse();
-        _receiver.setFile(_filename.value());
-      } 
-      _receiver.saveDataToFile();
+      if (!_receiver.hasFile(_fileName.value())) {
+        _form.parse(); 
+      }
+      _receiver.saveDataToFile(_fileName.value());
 
     } catch (FileNotFoundException fnfe) {
       _display.popup(Message.fileNotFound());

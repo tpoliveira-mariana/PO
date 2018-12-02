@@ -10,6 +10,12 @@ import java.util.HashSet;
 import sth.Observable;
 import sth.exceptions.NoSuchProjectSelectionException;
 import sth.exceptions.NoSurveySelectionException;
+import sth.exceptions.DuplicateSurveySelectionException;
+import sth.exceptions.OpeningSurveySelectionException;
+import sth.exceptions.NonEmptySurveySelectionException;
+import sth.exceptions.SurveyFinishedSelectionException;
+import sth.exceptions.ClosingSurveySelectionException;
+import sth.exceptions.FinishingSurveySelectionException;
 
 class Discipline extends sth.Observable implements Serializable {
 
@@ -73,7 +79,6 @@ class Discipline extends sth.Observable implements Serializable {
 	void addProject(Project proj) {
 		_projects.put(proj.getName(), proj);
 	}
-
 //
 
 //========== BOOLEANS ===========//
@@ -115,10 +120,10 @@ class Discipline extends sth.Observable implements Serializable {
 	List<String> showProjectSubmissions(String projName) {
 		Project proj = getProject(projName);
 
-		return proj.showSubmissions();
+		return proj.showSubmissions(getName());
 	}
 
-	List<String> showSurveys(School school, Student rep) throws NoSurveySelectionException {
+	List<String> showSurveys(School school, Person rep) throws NoSurveySelectionException {
 		List<String> allSurveys = new ArrayList<String>();
 
 		for (Project proj : _projects.values()) {
@@ -131,18 +136,74 @@ class Discipline extends sth.Observable implements Serializable {
 	}
 //
 
+//========== SURVEYS ===========//
+	void createSurvey(String projName) throws NoSuchProjectSelectionException, 
+											  DuplicateSurveySelectionException {
+
+		if (!projectExists(projName) || !projectIsOpen(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		getProject(projName).addSurvey(getName());
+	}
+
+	void openSurvey(String projName) throws NoSuchProjectSelectionException,
+                                            NoSurveySelectionException, 
+                                            OpeningSurveySelectionException {
+
+
+		if (!projectExists(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		getProject(projName).openSurvey(this);
+    }
+
+    void cancelSurvey(String projName) throws NoSuchProjectSelectionException,
+                                              NoSurveySelectionException,
+                                              NonEmptySurveySelectionException,
+                                              SurveyFinishedSelectionException {
+
+    	if (!projectExists(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		getProject(projName).cancelSurvey(getName());
+    }
+
+    void closeSurvey(String projName) throws NoSuchProjectSelectionException,
+                                             NoSurveySelectionException,
+                                             ClosingSurveySelectionException {
+
+    	if (!projectExists(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		getProject(projName).closeSurvey(getName());
+    }
+
+    void finishSurvey(String projName) throws NoSuchProjectSelectionException,
+                                              NoSurveySelectionException,
+                                              FinishingSurveySelectionException {
+    	if (!projectExists(projName)) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		getProject(projName).finishSurvey(this);
+    }
+//
 
 //========== NOTIFICATION ===========//
 
 	void sendOpenNotification(String projName) {
-		String notification = "Pode preencher inquérito do projeto " + projName + 
+		String notification = "Pode preencher inquérito do projecto " + projName + 
 								" da disciplina " + getName();
 
 		notifyObservers(notification);
 	}
 
 	void sendFinishNotification(String projName) {
-		String notification = "Resultados do inquérito do projeto " + projName + 
+		String notification = "Resultados do inquérito do projecto " + projName + 
 								" da disciplina " + getName();
 
 		notifyObservers(notification);

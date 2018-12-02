@@ -3,7 +3,6 @@ package sth;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
-import sth.Observer;
 import sth.exceptions.InvalidPhoneNumberException;
 
 abstract class Person implements Comparable<Person>, Serializable, sth.Observer {
@@ -22,7 +21,7 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer 
 	}
 
 	
-	//========== GETTERS ===========//
+//========== GETTERS ===========//
 
 	int getId() {
 		return _id;
@@ -41,9 +40,9 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer 
 	public List<String> seeAllNotifications() {
 		return _mail.seeMail();
 	}
+//
 
-
-	//========== SETTERS ===========//
+//========== SETTERS ===========//
 
 	void changePhoneNumber(String number) throws InvalidPhoneNumberException {
 		if (phoneNumberIsValid(number))
@@ -56,9 +55,9 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer 
 	public void receiveNotification(String notification) {
 		_mail.addMail(notification);
 	}
+//
 
-
-	//========== BOOLEANS ===========//
+//========== BOOLEANS ===========//
 
 	private boolean phoneNumberIsValid(String number) {
 		int numberDigits = number.length();
@@ -74,24 +73,33 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer 
 		} 
 		return false;
 	}	
+//
 
-
-	//========== SHOW ===========//
+//========== SHOW ===========//
 
 	@Override
 	public String toString() {
 		return "" + getId() + "|" + getPhoneNumber() + "|" + getName();
 	}
+//
 
-
-	//========== COMAPARATORS ===========//
+//========== COMAPARATORS ===========//
 
 	@Override
 	public int compareTo(Person other) {
 		return getId() - other.getId();
 	}
+//
+
+
+//========== OBSERVER ===========//
 
 //	void enableNotificationsFrom(Disicipline disc) {}
 
-//	void disableNotificationsFrom(Discipline disc) {}
+	@Override
+	public void disableNotifications(String discName) { 
+		/* intentionally left blanc */
+	}
+
+//
 }

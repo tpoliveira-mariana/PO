@@ -14,9 +14,9 @@ class AccentedComparator implements Serializable, Comparator<String> {
 
 	@Override
 	public int compare(String s1, String s2) {
-		return collator.compare(s1, s2);
-		//String a = Normalizer.normalize(s1, Normalizer.Form.NFD);
-		//String b = Normalizer.normalize(s2, Normalizer.Form.NFD);
-		//return a.compareTo(b);
+		//return collator.compare(s1, s2);
+		String a = Normalizer.normalize(s1, Normalizer.Form.NFD);
+		String b = Normalizer.normalize(s2, Normalizer.Form.NFD);
+		return a.compareTo(b);
 	}
 }

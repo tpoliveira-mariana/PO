@@ -24,7 +24,7 @@ class Course implements Serializable {
 	}
 
 
-	//========== GETTERS ===========//
+//========== GETTERS ===========//
 
 	String getName() {
 		return _name;
@@ -33,9 +33,9 @@ class Course implements Serializable {
 	Discipline getDiscipline(String discName) {
 		return _disciplines.get(discName);
 	}
+//
 
-
-	//========== SETTERS ===========//
+//========== SETTERS ===========//
 	void addDiscipline(Discipline disc) {		
 		_disciplines.put(disc.getName(), disc);
 	}	
@@ -60,9 +60,9 @@ class Course implements Serializable {
 	void removeRepresentative(Student rep) {
 		_representatives.remove(rep.getId());
 	}
+//
 
-
-	//========== BOOLEANS ===========//
+//========== BOOLEANS ===========//
 
 	boolean studentExists(int id) {
 		return _students.containsKey(id);
@@ -80,9 +80,9 @@ class Course implements Serializable {
 	boolean canAddRepresentative() {
 		return _currentRepresentatives < MAX_REPRESENTATIVES;
 	}
+//
 
-
-	//========== SHOW ===========//
+//========== SHOW ===========//
 
 	String showDisciplinesOf(Person p) {
 		String discInfo = "";
@@ -98,4 +98,5 @@ class Course implements Serializable {
 
 		return discInfo;
 	}
+//
 }
