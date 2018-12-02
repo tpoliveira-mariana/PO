@@ -49,6 +49,10 @@ class Course implements Serializable {
 		if (!representativeExists(rep.getId())) {
 			_representatives.put(rep.getId(), rep);
 			_currentRepresentatives++;
+			
+			for (Discipline d : _disciplines.values()) {
+				d.addObserver(rep);
+			}
 		}
 	}
 

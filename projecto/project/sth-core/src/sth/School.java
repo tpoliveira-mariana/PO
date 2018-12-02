@@ -169,8 +169,9 @@ class School implements Serializable {
 
     if (info[0].equals("DELEGADO") && !course.canAddRepresentative())
       throw new BadEntryException("O curso " + course.getName() + " não pode ter mais delegados.");
-    else if (info[0].equals("DELEGADO") && course.canAddRepresentative()) 
+    else if (info[0].equals("DELEGADO") && course.canAddRepresentative())  
       course.addRepresentative(student);
+
     
 
     addStudent(student);
