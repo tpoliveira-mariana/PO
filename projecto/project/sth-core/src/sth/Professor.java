@@ -49,6 +49,11 @@ class Professor extends Person implements Serializable {
 	public String toString() {
 		return "DOCENTE|" + super.toString();
 	}
+
+	@Override
+	public String accept(Visitor v) {
+		return v.show(this);
+	}
 //	
 
 //========== PROJECT ===========//

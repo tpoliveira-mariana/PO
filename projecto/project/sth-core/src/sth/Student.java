@@ -50,10 +50,10 @@ class Student extends Person implements Serializable {
 	
 //========== SHOW ===========//	
 
-	@Override
-	public String toString() {
-		return "ALUNO|" + super.toString();
-	}
+    @Override
+    public String accept(Visitor v) {
+        return v.show(this);
+    }
 //
 
 //========== PROJECT ===========//

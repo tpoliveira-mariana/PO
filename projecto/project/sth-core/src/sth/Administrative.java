@@ -18,4 +18,9 @@ class Administrative extends Person implements Serializable {
 	public String toString() {
 		return "FUNCIONÁRIO|" + super.toString();
 	}
+
+	@Override 
+	public String accept(Visitor v) {
+		return v.show(this);
+	}
 }

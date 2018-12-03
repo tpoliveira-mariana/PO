@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 import sth.exceptions.InvalidPhoneNumberException;
 
-abstract class Person implements Comparable<Person>, Serializable, sth.Observer {
+abstract class Person implements Comparable<Person>, Serializable, sth.Observer, Visitable {
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 201811081101L;	
@@ -81,6 +81,7 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer 
 	public String toString() {
 		return "" + getId() + "|" + getPhoneNumber() + "|" + getName();
 	}
+	
 //
 
 //========== COMAPARATORS ===========//

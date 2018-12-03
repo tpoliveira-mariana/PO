@@ -376,12 +376,24 @@ class School implements Serializable {
   * The student to which we want to know the course.
   * @return The student's course.
   */
-  private Course getStudentCourse(Student student) {
+  Course getStudentCourse(Student student) {
     for (Course c : _courses.values())
       if (c.studentExists(student.getId()))
         return c;
 
     return null;
+  }
+
+  List<Course> getProfCourses(Professor prof) {
+    List<Course> courses = new ArrayList<Course>();
+
+    for (Course c : _courses.values()) {
+      if (c.professorExists(prof.getId())) {
+        courses.add(c);
+      }
+    }
+
+    return courses;
   }
 //
   
@@ -482,66 +494,9 @@ class School implements Serializable {
    * @return The string representing the person.
    */
   String showPerson(Person p) {
-    Administrative admin = null;
-    Student student = null;
-
-    if ((admin = getAdminById(p.getId())) != null)
-      return showAdministrative(admin);
-
-    else if ((student = getStudentById(p.getId())) != null)
-      return showStudent(student);
-
-    else {
-      Professor prof = getProfessorById(p.getId());
-      return showProfessor(prof);
-    }
+    return p.accept(new PersonPrinter(this));
   }
 
-  /**
-   * @param admin
-   * The administrative to show.
-   * @return The string representing the administrative.
-   */
-  private String showAdministrative(Administrative admin) {
-    return admin.toString();
-  }
-
-  /**
-   * @param student
-   * The student to show.
-   * @return The string representing the student.
-   */
-  private String showStudent(Student student) {
-    String studentInfo;
-
-    if (!representativeExists(student.getId())) {
-      studentInfo = student.toString();
-    }
-    else {
-      studentInfo = "DELEGADO|" + student.getId() + "|" + student.getPhoneNumber() 
-            + "|" + student.getName();
-    }
-    
-    Course course = getStudentCourse(student);
-
-    return studentInfo + course.showDisciplinesOf(student);
-  }
-
-  /**
-   * @param prof
-   * The professor to show.
-   * @return The string representing the professor.
-   */
-  private String showProfessor(Professor prof) {
-    String profInfo = prof.toString();
-
-     for (Course course : _courses.values()) {
-      if (course.professorExists(prof.getId()))
-        profInfo += course.showDisciplinesOf(prof);
-    }
-
-    return profInfo;
-  }
 
   /**
    * @return The list of strings that represent each person on the school.
