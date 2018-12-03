@@ -52,7 +52,7 @@ class Student extends Person implements Serializable {
 
     @Override
     public String accept(Visitor v) {
-        return v.show(this);
+        return v.visit(this);
     }
 //
 
@@ -93,24 +93,24 @@ class Student extends Person implements Serializable {
     proj.addSurveyAnswer(getId(), discName, hours, message);
   }
 
-  String seeSurveyResults(School school, String discName, String projName, boolean isRep)
+  String seeSurveyResults(String discName, String projName, boolean isRep)
                                                     throws NoSuchDisciplineSelectionException,
                                                     NoSuchProjectSelectionException,
                                                     NoSurveySelectionException {
 
 
-    if (!isRep && !attendsDiscipline(discName)) {
+    if (!attendsDiscipline(discName)) {
       throw new NoSuchDisciplineSelectionException(discName);
     }
 
     Discipline disc = getDisciplineByName(discName);
     Project proj = disc.getProject(projName);
 
-    if (proj == null /*|| (!isRep && !proj.hasSubmitted(getId()))*/) {
+    if (proj == null) {
       throw new NoSuchProjectSelectionException(discName, projName);
     }
 
-    return disc.showSurveyResults(school, this, projName, isRep);
+    return disc.showSurveyResults(projName, this, isRep);
   }
 //	
 }

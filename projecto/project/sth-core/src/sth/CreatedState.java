@@ -1,5 +1,7 @@
 package sth;
 
+import java.util.List;
+import java.util.ArrayList;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
@@ -28,7 +30,9 @@ class CreatedState extends Survey.SurveyState {
 	}
 
 	@Override
-	String showResults(School school, Person p, String discName, Project proj) {
-		return discName + " - " + proj.getName() + " (por abrir)";
+	List<String> showResults(String discName, Project proj) {
+		List<String> results = new ArrayList<String>();
+		results.add("" + discName + " - " + proj.getName() + " (por abrir)");
+		return results;
 	}
 }

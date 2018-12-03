@@ -52,7 +52,7 @@ class Professor extends Person implements Serializable {
 
 	@Override
 	public String accept(Visitor v) {
-		return v.show(this);
+		return v.visit(this);
 	}
 //	
 
@@ -98,14 +98,28 @@ class Professor extends Person implements Serializable {
 
 //========== SURVEY ===========//
 
-	String seeSurveyResults(School school, String discName, String projName)
+	String seeSurveyResults(String discName, String projName)
 														throws NoSuchProjectSelectionException,
 														NoSurveySelectionException {
 
 		Discipline disc = getDisciplineByName(discName);
 		Project proj = disc.validateProject(projName);
 
-		return proj.showSurveyResults(school, this, discName);
+		List<String> results = proj.showSurveyResults(discName);
+
+		if (results.size() == 1) {
+			return results.get(0);
+		}
+
+		String numAnswers = results.get(1);
+		String minHours = results.get(2);
+		String avgTime	= results.get(3);
+		String maxHours = results.get(4);
+
+		return results.get(0) + "\n * Número de submissões: " + proj.numSubmissions() + "\n" + 
+						 " * Número de respostas: " + numAnswers + "\n" +
+						 " * Tempos de resolução (horas) (mínimo, médio, máximo): " +
+						minHours + ", " + avgTime + ", " + maxHours;
 	}
 //
 

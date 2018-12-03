@@ -636,8 +636,7 @@ class School implements Serializable {
       throw new NoSuchDisciplineSelectionException(discName);
     }  
 
-
-    return prof.seeSurveyResults(this, discName, projName);
+    return  prof.seeSurveyResults(discName, projName);
   }
 //
 
@@ -695,7 +694,7 @@ class School implements Serializable {
       throw new NoSuchDisciplineSelectionException(discName);
     }  
 
-    return student.seeSurveyResults(this, discName, projName, isRep);
+    return student.seeSurveyResults(discName, projName, isRep);
   }
 
   /**
@@ -790,7 +789,7 @@ class School implements Serializable {
                                                    NoSurveySelectionException {
 
     Discipline disc = validateRepDiscipline(p, discName);
-    return disc.showSurveys(this, p);
+    return disc.showSurveys(p);
   }
 // 
 

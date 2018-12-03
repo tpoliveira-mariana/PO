@@ -2,7 +2,7 @@ package sth;
 
 interface Visitor {
 
-	public String show(Professor prof);
-	public String show(Administrative admin);
-	public String show(Student student);
+	public String visit(Professor prof);
+	public String visit(Administrative admin);
+	public String visit(Student student);
 }

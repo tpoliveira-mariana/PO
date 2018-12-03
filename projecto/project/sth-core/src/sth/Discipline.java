@@ -123,7 +123,7 @@ class Discipline extends sth.Observable implements Serializable {
 		return proj.showSubmissions(getName());
 	}
 
-	String showSurveyResults(School school, Student student, String projName, boolean isRep) 
+	String showSurveyResults(String projName, Student student, boolean isRep) 
 														throws NoSurveySelectionException,
 														NoSuchProjectSelectionException {
 		Project proj = getProject(projName);
@@ -132,19 +132,37 @@ class Discipline extends sth.Observable implements Serializable {
 			throw new NoSurveySelectionException(getName(), projName);
 		}
 
-		else if (!isRep && !proj.hasSubmitted(student.getId())) {
+		else if (!isRep && !proj.hasSubmitted(student.getId())) { // com comentario chumba teste 40
 			throw new NoSuchProjectSelectionException(getName(), projName);
 		}
 
-		return proj.showSurveyResults(school, student,getName());
+		List<String> results = proj.showSurveyResults(getName());
+
+		if (results.size() == 1) {
+			return results.get(0);
+		}
+
+		String minHours = results.get(2);
+		String avgTime = results.get(3);
+
+		return results.get(0) +  "\n * Número de submissões: " + proj.numSubmissions() + "\n" +
+					" * Tempo médio (horas): " + avgTime;
 	}
 
-	List<String> showSurveys(School school, Person rep) throws NoSurveySelectionException {
+	List<String> showSurveys(Person rep) throws NoSurveySelectionException {
 		List<String> allSurveys = new ArrayList<String>();
 
 		for (Project proj : _projects.values()) {
 			if (proj.surveyAlreadyExists()) {
-				allSurveys.add(proj.showSurveyResults(school, rep, getName()));
+				List<String> results = proj.showSurveyResults(getName());
+				String formatedResults = results.get(0);
+				if (results.size() > 1) {
+					String numAnswers = results.get(1);
+					String avgTime = results.get(3);
+					formatedResults += " - Número de respostas " + numAnswers + 
+						" - Tempo médio de execução " + avgTime;
+				}
+				allSurveys.add(formatedResults);
 			}
 		}
 

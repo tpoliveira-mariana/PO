@@ -21,6 +21,6 @@ class Administrative extends Person implements Serializable {
 
 	@Override 
 	public String accept(Visitor v) {
-		return v.show(this);
+		return v.visit(this);
 	}
 }

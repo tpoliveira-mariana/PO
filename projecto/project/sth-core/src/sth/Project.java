@@ -54,7 +54,7 @@ class Project implements Serializable {
     }
 
 
-	//========== SETTERS ===========//
+//========== SETTERS ===========//
 
 	void close(Discipline disc) throws OpeningSurveySelectionException {
 		_isOpen = false;
@@ -76,7 +76,7 @@ class Project implements Serializable {
 		ProjectSubmission sub = getSubmission(id);
 		sub.surveyAnswered();
 	}
-
+//
 
 //========== BOOLEANS ===========//
 
@@ -113,13 +113,13 @@ class Project implements Serializable {
 		return result;
 	}
 
-	String showSurveyResults(School school, Person p, String discName)
+	List<String> showSurveyResults(String discName)
 													throws NoSurveySelectionException {
 		if (!surveyAlreadyExists()) {
 			throw new NoSurveySelectionException(discName, getName());
 		}
 
-		return _survey.showResults(school, p, discName, this);
+		return _survey.showResults(discName, this);
 	}
 //
 	

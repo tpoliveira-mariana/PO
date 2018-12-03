@@ -3,6 +3,7 @@ package sth;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
@@ -26,28 +27,28 @@ class Survey implements Serializable {
 			return Survey.this;
 		}
 
-		abstract void cancel(String disc, Project proj) throws NonEmptySurveySelectionException, 
+		abstract void cancel(String discName, Project proj) throws NonEmptySurveySelectionException, 
 															SurveyFinishedSelectionException;
 
-		void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
-			throw new OpeningSurveySelectionException(disc.getName(), proj);
+		void open(Discipline disc, String projName) throws OpeningSurveySelectionException {
+			throw new OpeningSurveySelectionException(disc.getName(), projName);
 		}
 
-		void close(String disc, String proj) throws ClosingSurveySelectionException {
-			throw new ClosingSurveySelectionException(disc, proj);
+		void close(String discName, String projName) throws ClosingSurveySelectionException {
+			throw new ClosingSurveySelectionException(discName, projName);
 		}
 
-		void finish(String disc, String proj) throws FinishingSurveySelectionException {
-			throw new FinishingSurveySelectionException(disc, proj);
+		void finish(String discName, String projName) throws FinishingSurveySelectionException {
+			throw new FinishingSurveySelectionException(discName, projName);
 		}
 
-		SurveyAnswer answer(String disc, String proj, int hours, String msg) 
+		SurveyAnswer answer(String discName, String projName, int hours, String msg) 
 														throws NoSurveySelectionException {
 
-			throw new NoSurveySelectionException(disc, proj);
+			throw new NoSurveySelectionException(discName, projName);
 		}
 
-		abstract String showResults(School school, Person p, String discName, Project proj);
+		abstract List<String> showResults(String discName, Project proj);
 	}
 
 
@@ -81,33 +82,33 @@ class Survey implements Serializable {
 
 	//========== ACTIONS ===========//
 
-	void cancel(String disc, Project proj) throws NonEmptySurveySelectionException, 
+	void cancel(String discName, Project proj) throws NonEmptySurveySelectionException, 
 												SurveyFinishedSelectionException {
-		_state.cancel(disc, proj);
+		_state.cancel(discName, proj);
 	}
 
-	void open(Discipline disc, String proj) throws OpeningSurveySelectionException {
-		_state.open(disc, proj);
-		disc.sendOpenNotification(proj);
+	void open(Discipline disc, String projName) throws OpeningSurveySelectionException {
+		_state.open(disc, projName);
+		disc.sendOpenNotification(projName);
 	}
 
-	void close(String disc,String proj) throws ClosingSurveySelectionException {
-		_state.close(disc, proj);
+	void close(String discName,String projName) throws ClosingSurveySelectionException {
+		_state.close(discName, projName);
 	}
 
-	void finish(Discipline disc, String proj) throws FinishingSurveySelectionException {
-		_state.finish(disc.getName(), proj);
-		disc.sendFinishNotification(proj);
+	void finish(Discipline disc, String projName) throws FinishingSurveySelectionException {
+		_state.finish(disc.getName(), projName);
+		disc.sendFinishNotification(projName);
 	}
 
-	void answer(String disc, String proj, int hours, String msg) 
+	void answer(String discName, String projName, int hours, String msg) 
 														throws NoSurveySelectionException {
 
-		SurveyAnswer answer = _state.answer(disc, proj, hours, msg);
+		SurveyAnswer answer = _state.answer(discName, projName, hours, msg);
 		addAnswer(answer);
 	}
 
-	String showResults(School school, Person p, String discName, Project proj) {
-		return _state.showResults(school, p, discName, proj);
+	List<String> showResults(String discName, Project proj) {
+		return _state.showResults(discName, proj);
 	}
 }

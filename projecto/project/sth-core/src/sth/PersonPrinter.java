@@ -10,7 +10,7 @@ class PersonPrinter implements Visitor {
 	}
 
 	@Override
-	public String show(Professor prof) {
+	public String visit(Professor prof) {
 		String profInfo = prof.toString();
 
 		List<Course> courses = _school.getProfCourses(prof);
@@ -23,12 +23,12 @@ class PersonPrinter implements Visitor {
 	}
 
 	@Override 
-	public String show(Administrative admin) {
+	public String visit(Administrative admin) {
 		return admin.toString();
 	}
 
 	@Override
-	public String show(Student student) {
+	public String visit(Student student) {
 		String studentInfo = (_school.representativeExists(student.getId()) ? "DELEGADO|" : "ALUNO|") + 
 								student.toString();
 

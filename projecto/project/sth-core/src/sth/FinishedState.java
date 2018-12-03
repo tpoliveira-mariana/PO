@@ -1,6 +1,8 @@
 package sth;
 
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
 import sth.exceptions.FinishingSurveySelectionException;
@@ -29,8 +31,9 @@ class FinishedState extends Survey.SurveyState {
 	}
 
 	@Override
-	String showResults(School school, Person p, String discName, Project proj) {
-		String results = discName + " - " + proj.getName();
+	List<String> showResults(String discName, Project proj) {
+		List<String> results = new ArrayList<String>();
+		results.add("" + discName + " - " + proj.getName());
 		
 		int minHours =-1, maxHours = -1, totalHours = 0;
 		Set<SurveyAnswer> answers = getSurvey().getAnswers();
@@ -46,21 +49,34 @@ class FinishedState extends Survey.SurveyState {
 		minHours = (minHours == -1 ? 0 : minHours);
 		maxHours = (maxHours == -1 ? 0 : maxHours);
 
-		if (school.professorExists(p.getId())) {
-			results += "\n * Número de submissões: " + proj.numSubmissions() + "\n" + 
+		results.add(Integer.toString(numAnswers));
+		results.add(Integer.toString(minHours));
+		results.add(Integer.toString(avgTime));
+		results.add(Integer.toString(maxHours));
+
+		return results;
+	}
+
+	
+
+	private String showToProfessor(String results, Project proj, int minHours, int maxHours, int avgTime) {
+		int numAnswers = getSurvey().getNumAnswers();
+
+		return results + "\n * Número de submissões: " + proj.numSubmissions() + "\n" + 
 						 " * Número de respostas: " + numAnswers + "\n" +
 						 " * Tempos de resolução (horas) (mínimo, médio, máximo): " +
 						minHours + ", " + avgTime + ", " + maxHours;
-		}
-		else if (school.representativeExists(p.getId())) {
-			results += " - Número de respostas " + numAnswers + 
-						" - Tempo médio de execução " + avgTime; 
-		}
-		else {
-			results += "\n * Número de submissões: " + proj.numSubmissions() + "\n" +
-					" * Tempo médio (horas): " + avgTime;
-		}
+	}
 
-		return results;
+	private String showToRepresentative(String results, Project proj, int avgTime) {
+		int numAnswers = getSurvey().getNumAnswers();
+
+		return results + " - Número de respostas " + numAnswers + 
+						" - Tempo médio de execução " + avgTime;
+	}
+
+	private String showToStudent(String results, Project proj, int avgTime) {
+		return results + "\n * Número de submissões: " + proj.numSubmissions() + "\n" +
+					" * Tempo médio (horas): " + avgTime;
 	}
 }
