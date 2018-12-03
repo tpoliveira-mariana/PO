@@ -123,6 +123,22 @@ class Discipline extends sth.Observable implements Serializable {
 		return proj.showSubmissions(getName());
 	}
 
+	String showSurveyResults(School school, Student student, String projName, boolean isRep) 
+														throws NoSurveySelectionException,
+														NoSuchProjectSelectionException {
+		Project proj = getProject(projName);
+
+		if (!proj.surveyAlreadyExists()) {
+			throw new NoSurveySelectionException(getName(), projName);
+		}
+
+		else if (!isRep && !proj.hasSubmitted(student.getId())) {
+			throw new NoSuchProjectSelectionException(getName(), projName);
+		}
+
+		return proj.showSurveyResults(school, student,getName());
+	}
+
 	List<String> showSurveys(School school, Person rep) throws NoSurveySelectionException {
 		List<String> allSurveys = new ArrayList<String>();
 

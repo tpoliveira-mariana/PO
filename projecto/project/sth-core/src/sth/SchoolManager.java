@@ -424,15 +424,6 @@ public class SchoolManager {
     }
   }
 
-  public void showSurveyResultsRep(String discName, String projName) 
-  											 	throws NoSuchDisciplineSelectionException, 
-                                              	NoSuchProjectSelectionException,
-                                              	NoSurveySelectionException {
-
-  	if (hasRepresentative()) {
-  		_school.letRepSeeSurveyResults(_user, discName, projName);
-  	}
-  }
 
   public List<String> showDisciplineSurveys(String discName)
                                               throws NoSuchDisciplineSelectionException, 

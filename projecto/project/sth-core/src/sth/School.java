@@ -704,6 +704,7 @@ class School implements Serializable {
   void letSubmitProject(Person p, String discName, String projName, String message) 
                                                       throws NoSuchDisciplineSelectionException, 
                                                       NoSuchProjectSelectionException {
+  
     Student student = getStudentById(p.getId());
 
     if (!student.attendsDiscipline(discName)) {
@@ -733,11 +734,13 @@ class School implements Serializable {
                                                   NoSurveySelectionException {
     
     Student student = getStudentById(p.getId());
+    boolean isRep = representativeExists(p.getId());
+
     if (!student.attendsDiscipline(discName)) {
       throw new NoSuchDisciplineSelectionException(discName);
     }  
 
-    return student.showSurveyResults(this, discName, projName);
+    return student.seeSurveyResults(this, discName, projName, isRep);
   }
 
   /**
@@ -825,16 +828,6 @@ class School implements Serializable {
 
     Discipline disc = validateRepDiscipline(p, discName);
     disc.finishSurvey(projName);
-  }
-
-  String letRepSeeSurveyResults(Person p, String discName, String projName) 
-                                                  throws NoSuchDisciplineSelectionException, 
-                                                  NoSuchProjectSelectionException,
-                                                  NoSurveySelectionException {
-
-    validateRepDiscipline(p, discName);
-    Student rep = getStudentById(p.getId());
-    return rep.showSurveyResults(this, discName, projName);
   }
 
   List<String> letSeeDisciplineSurveys(Person p, String discName)
