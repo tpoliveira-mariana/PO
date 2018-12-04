@@ -54,6 +54,7 @@ class School implements Serializable {
       line = registerFromInfo(info, input);   
     }
     input.close();
+    addRepsToAllDisicplines();
   }
 
  /**
@@ -298,6 +299,11 @@ class School implements Serializable {
   private void updateCurrentId(int id) {
     if (id > _currentID)
       _currentID = id;
+  }
+
+  private void addRepsToAllDisicplines() {
+    for (Course course : _courses.values())
+      course.addRepToDisciplines();
   }
 //
 
@@ -636,7 +642,7 @@ class School implements Serializable {
       throw new NoSuchDisciplineSelectionException(discName);
     }  
 
-    return  prof.seeSurveyResults(discName, projName);
+    return prof.seeSurveyResults(discName, projName);
   }
 //
 
@@ -687,14 +693,13 @@ class School implements Serializable {
                                                   NoSuchProjectSelectionException,
                                                   NoSurveySelectionException {
     
-    Student student = getStudentById(p.getId());
-    boolean isRep = representativeExists(p.getId());
+    Student student = getStudentById(p.getId()); 
 
     if (!student.attendsDiscipline(discName)) {
       throw new NoSuchDisciplineSelectionException(discName);
-    }  
+    } 
 
-    return student.seeSurveyResults(discName, projName, isRep);
+    return student.seeSurveyResults(discName, projName);
   }
 
   /**

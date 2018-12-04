@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.TreeMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import sth.exceptions.BadEntryException;
 import sth.exceptions.NoSuchProjectSelectionException;
 import sth.exceptions.NoSurveySelectionException;
@@ -69,6 +71,12 @@ class Course implements Serializable {
 	void removeRepresentative(Student rep) {
 		_representatives.remove(rep.getId());
 	}
+
+	void addRepToDisciplines() {
+		for (Student rep : _representatives.values()) 
+			for (Discipline disc : _disciplines.values()) 
+				disc.addObserver(rep);	
+	}
 //
 
 //========== BOOLEANS ===========//
@@ -107,19 +115,5 @@ class Course implements Serializable {
 
 		return discInfo;
 	}
-
-/*	String showSurveyResults(School school, Student student, String discName, String projName, boolean isRep) 
-																throws NoSuchProjectSelectionException,
-                                                    			NoSurveySelectionException {
-
-		Discipline disc = getDiscipline(discName);
-		Project proj = disc.getProject(projName);
-
-    	if (proj == null || (!isRep && !proj.hasSubmitted(student.getId()))) {
-      		throw new NoSuchProjectSelectionException(discName, projName);
-    	}
-
-    	return proj.showSurveyResults(school, student, discName);
-	}*/
 //
 }

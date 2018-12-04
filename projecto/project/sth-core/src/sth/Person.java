@@ -90,6 +90,7 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer,
 	public int compareTo(Person other) {
 		return getId() - other.getId();
 	}
+
 //
 
 
