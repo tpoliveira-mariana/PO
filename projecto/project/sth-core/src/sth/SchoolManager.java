@@ -298,7 +298,7 @@ public class SchoolManager {
                                               NoSurveySelectionException {  
 
     if (hasProfessor()) {
-      return _school.letSeeSurveyResultsProf(_user, discName, projName);
+      return _school.letProfSeeSurveyResults(_user, discName, projName);
     }
     return null;
   }
@@ -358,7 +358,7 @@ public class SchoolManager {
                                               NoSurveySelectionException {  
 
     if (hasStudent()) {
-      return _school.letSeeSurveyResultsStudent(_user, discName, projName);
+      return _school.letStudentSeeSurveyResults(_user, discName, projName);
     }
     return null;
   }
@@ -439,10 +439,12 @@ public class SchoolManager {
 
 //======= OBSERVERS =======//
 
-  void disableNotifications(String discName) {
-  	if (hasProfessor() || hasStudent()) {
-  		_user.disableNotifications(discName);
-  	}
+  void disableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+  	_user.disableNotifications(discName);
+  }
+
+  void enableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+    _user.enableNotifications(discName);
   }
 //
 

@@ -38,9 +38,9 @@ class OpenState extends Survey.SurveyState {
 
 	@Override
 	// Um aluno pode responder a um inquérito aberto
-	SurveyAnswer answer(String disc, String proj, int hours, String msg) throws NoSurveySelectionException {
+	void answer(String disc, String proj, int hours, String msg) throws NoSurveySelectionException {
 		Survey survey = getSurvey();
-		return new SurveyAnswer(hours, msg);
+		survey.addAnswer(new SurveyAnswer(hours, msg));
 	}
 
 	@Override

@@ -632,7 +632,7 @@ class School implements Serializable {
     return prof.seeProjectSubmissions(discName, projName); 
   }
 
-  String letSeeSurveyResultsProf(Person p, String discName, String projName)
+  String letProfSeeSurveyResults(Person p, String discName, String projName)
                                                   throws NoSuchDisciplineSelectionException,
                                                   NoSuchProjectSelectionException,
                                                   NoSurveySelectionException {
@@ -688,7 +688,7 @@ class School implements Serializable {
     student.answerSurvey(discName, projName, hours, message);
   }
 
-  String letSeeSurveyResultsStudent(Person p, String discName, String projName)
+  String letStudentSeeSurveyResults(Person p, String discName, String projName)
                                                   throws NoSuchDisciplineSelectionException,
                                                   NoSuchProjectSelectionException,
                                                   NoSurveySelectionException {

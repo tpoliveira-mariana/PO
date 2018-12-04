@@ -1,8 +1,7 @@
 package sth;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.List;
 import sth.exceptions.NonEmptySurveySelectionException;
 import sth.exceptions.SurveyFinishedSelectionException;
@@ -17,7 +16,7 @@ class Survey implements Serializable {
 	private static final long serialVersionUID = 201811241523L;
 	private SurveyState _state = new CreatedState(this);
 	private int _numberAnswers = 0;
-	private Set<SurveyAnswer> _answers = new HashSet<SurveyAnswer>();
+	private List<SurveyAnswer> _answers = new ArrayList<SurveyAnswer>();
 
 	abstract class SurveyState implements Serializable {
 		/** Serial number for serialization. */
@@ -42,7 +41,7 @@ class Survey implements Serializable {
 			throw new FinishingSurveySelectionException(discName, projName);
 		}
 
-		SurveyAnswer answer(String discName, String projName, int hours, String msg) 
+		void answer(String discName, String projName, int hours, String msg) 
 														throws NoSurveySelectionException {
 
 			throw new NoSurveySelectionException(discName, projName);
@@ -65,7 +64,7 @@ class Survey implements Serializable {
 
 	//========== GETTERS ===========//
 
-	Set<SurveyAnswer> getAnswers() {
+	List<SurveyAnswer> getAnswers() {
 		return _answers;
 	}
 
@@ -104,8 +103,7 @@ class Survey implements Serializable {
 	void answer(String discName, String projName, int hours, String msg) 
 														throws NoSurveySelectionException {
 
-		SurveyAnswer answer = _state.answer(discName, projName, hours, msg);
-		addAnswer(answer);
+		_state.answer(discName, projName, hours, msg);
 	}
 
 	List<String> showResults(String discName, Project proj) {

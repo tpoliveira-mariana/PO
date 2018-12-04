@@ -57,9 +57,8 @@ class Course implements Serializable {
 		if (!representativeExists(rep.getId())) {
 			_representatives.put(rep.getId(), rep);
 			_currentRepresentatives++;
-			for (Discipline d : _disciplines.values()) {
+			for (Discipline d : _disciplines.values()) 
 				d.addObserver(rep);
-			}
 		}
 	}
 
@@ -70,6 +69,9 @@ class Course implements Serializable {
 
 	void removeRepresentative(Student rep) {
 		_representatives.remove(rep.getId());
+		for (Discipline disc : _disciplines.values()) 
+			if (!rep.attendsDiscipline(disc.getName())) 
+				disc.removeObserver(rep);
 	}
 
 	void addRepToDisciplines() {

@@ -8,6 +8,7 @@ import sth.exceptions.DuplicateProjectSelectionException;
 import sth.exceptions.NoSuchProjectSelectionException;
 import sth.exceptions.NoSurveySelectionException;
 import sth.exceptions.OpeningSurveySelectionException;
+import sth.exceptions.NoSuchDisciplineSelectionException;
 
 
 class Professor extends Person implements Serializable {
@@ -114,11 +115,24 @@ class Professor extends Person implements Serializable {
 //========== NOTIFICATIONS ===========//
 
 	@Override
-	public void disableNotifications(String discName) {
-		Discipline disc = getDisciplineByName(discName);
-		if (disc != null) {
-			disc.removeObserver(this);
+	public void enableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+		if (!teachesDiscipline(discName)) {
+			throw new NoSuchDisciplineSelectionException(discName);
 		}
+
+		Discipline disc = getDisciplineByName(discName);
+		disc.addObserver(this);
+	}
+
+	@Override
+	public void disableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+
+		if (!teachesDiscipline(discName)) {
+			throw new NoSuchDisciplineSelectionException(discName);
+		}
+
+		Discipline disc = getDisciplineByName(discName);
+		disc.removeObserver(this);
 	}
 //
 }

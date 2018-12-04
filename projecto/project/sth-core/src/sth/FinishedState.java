@@ -1,6 +1,5 @@
 package sth;
 
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import sth.exceptions.NonEmptySurveySelectionException;
@@ -37,7 +36,7 @@ class FinishedState extends Survey.SurveyState {
 		
 		int minHours =-1, maxHours = -1, totalHours = 0;
 		int numSubmissions = proj.numSubmissions();
-		Set<SurveyAnswer> answers = getSurvey().getAnswers();
+		List<SurveyAnswer> answers = getSurvey().getAnswers();
 		for (SurveyAnswer answer : answers) {
 			int hoursSpent = answer.getHoursSpent();
 			totalHours += hoursSpent;

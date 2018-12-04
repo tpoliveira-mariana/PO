@@ -1,7 +1,7 @@
 package sth;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.Serializable;
 import sth.Observer;
 
@@ -10,18 +10,18 @@ abstract class Observable implements Serializable {
 
 	/** Serial number for serialization. */
   	private static final long serialVersionUID = 201811272014L;
-	private Set<Observer> _observers = new HashSet<Observer>();
+	private HashMap<Integer, Observer> _observers = new HashMap<Integer, Observer>();
 
 	void addObserver(Observer obs) {
-		_observers.add(obs);
+		_observers.put(obs.getId(), obs);
 	}
 
 	void removeObserver(Observer obs) {
-		_observers.remove(obs);
+		_observers.remove(obs.getId());
 	}
 
 	void notifyObservers(String notification) {
-		for (Observer obs : _observers) {
+		for (Observer obs : _observers.values()) {
 			obs.receiveNotification(notification);
 		}
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import sth.exceptions.InvalidPhoneNumberException;
+import sth.exceptions.NoSuchDisciplineSelectionException;
 
 abstract class Person implements Comparable<Person>, Serializable, sth.Observer, Visitable {
 
@@ -22,8 +23,8 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer,
 
 	
 //========== GETTERS ===========//
-
-	int getId() {
+	@Override
+	public int getId() {
 		return _id;
 	}
 
@@ -96,10 +97,13 @@ abstract class Person implements Comparable<Person>, Serializable, sth.Observer,
 
 //========== OBSERVER ===========//
 
-//	void enableNotificationsFrom(Disicipline disc) {}
+	@Override
+	public void enableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+		/* intentionally left blanc */
+	}
 
 	@Override
-	public void disableNotifications(String discName) { 
+	public void disableNotifications(String discName) throws NoSuchDisciplineSelectionException { 
 		/* intentionally left blanc */
 	}
 

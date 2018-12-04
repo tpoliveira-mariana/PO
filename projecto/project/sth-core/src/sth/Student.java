@@ -110,5 +110,30 @@ class Student extends Person implements Serializable {
 
     return accept(new SurveyPrinter(results));
   }
+//
+
+//========== NOTIFICATIONS ===========//
+
+    @Override
+    public void enableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+
+        if (!attendsDiscipline(discName)) {
+            throw new NoSuchDisciplineSelectionException(discName);
+        }
+
+        Discipline disc = getDisciplineByName(discName);
+        disc.addObserver(this);
+    }
+
+    @Override
+    public void disableNotifications(String discName) throws NoSuchDisciplineSelectionException {
+
+        if (!attendsDiscipline(discName)) {
+            throw new NoSuchDisciplineSelectionException(discName);
+        }
+
+        Discipline disc = getDisciplineByName(discName);
+        disc.removeObserver(this);
+    }
 //	
 }
