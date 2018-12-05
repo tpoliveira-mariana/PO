@@ -157,6 +157,10 @@ class Project implements Serializable {
 			throw new NoSurveySelectionException(disc.getName(), getName());
 		}
 
+		if(isOpen()) {
+			throw new OpeningSurveySelectionException(disc.getName(), getName());
+		}
+
 		_survey.open(disc, getName());
 	}
 
