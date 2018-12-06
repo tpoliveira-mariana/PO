@@ -138,7 +138,9 @@ public class SchoolManager {
    * @return List of unseen notifications the user has
    */
   public List<String> showInbox() {
-    return _user.seeAllNotifications();
+    List<String> notifications = _user.seeAllNotifications();
+    modify();
+    return notifications;
   }
 //
 
@@ -150,7 +152,7 @@ public class SchoolManager {
    * @throws ClassNotFoundException
    * @throws NoSuchPersonIdException
    */
-  public List<String> openDataFile(String fileName) throws IOException, FileNotFoundException, 
+  public void openDataFile(String fileName) throws IOException, FileNotFoundException, 
                                   ClassNotFoundException, NoSuchPersonIdException {
 
       updateFileName(fileName);
@@ -168,8 +170,6 @@ public class SchoolManager {
       login(_user.getId());
       in.close();
       modify();
-
-      return showInbox();
   }
 
   /**

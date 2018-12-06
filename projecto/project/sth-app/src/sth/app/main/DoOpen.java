@@ -32,7 +32,8 @@ public class DoOpen extends Command<SchoolManager> {
     
     try {   
       _form.parse(); 
-      List<String> notifications = _receiver.openDataFile(_filename.value());
+      _receiver.openDataFile(_filename.value());
+      List<String> notifications = _receiver.showInbox();
 
       for (String note : notifications) 
         _display.addLine(note);
