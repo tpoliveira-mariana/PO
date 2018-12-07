@@ -45,7 +45,7 @@ class SurveyPrinter implements Visitor {
 		if (!_surveyIsFinished)
 			return _header;
 		
-		return _header +  "\n * Número de submissões: " + _numSubmissions + "\n" +
+		return _header +  "\n * Número de respostas: " + _numAnswers + "\n" +
 					" * Tempo médio (horas): " + _avgTime;
 	}
 }

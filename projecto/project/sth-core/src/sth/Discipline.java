@@ -133,8 +133,8 @@ class Discipline extends sth.Observable implements Serializable {
 				if (results.size() > 1) {
 					String numAnswers = results.get(1);
 					String avgTime = results.get(3);
-					formatedResults += " - Número de respostas " + numAnswers + 
-						" - Tempo médio de execução " + avgTime;
+					formatedResults += " - " + numAnswers + " respostas - " + 
+						avgTime + " horas";
 				}
 				allSurveys.add(formatedResults);
 			}
